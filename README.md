@@ -16,3 +16,9 @@ openssl req -new -sha256 -key keys/domain.key -subj "/" -reqexts SAN -config ope
 4. `mv /etc/stunnel/stunnel.pem /etc/stunnel/stunnel.pem.orig`
 5. run `renew_certificate.sh`
 6. account.key, domain.key and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night (certificate will only be renewed if <30 days left)
+7. example: (make sure to use crontab -e!)
+```
+30 3 * * * cd /share/homes/admin/qnap-letsencrypt && /share/homes/admin/qnap-letsencrypt/renew_certificate.sh &> /share/homes/admin/qnap-letsencrypt/renew_certificate.log
+```
+this should hopefully persist a reboot...
+just to be sure, restart crond: `/etc/init.d/crond.sh restart` 
