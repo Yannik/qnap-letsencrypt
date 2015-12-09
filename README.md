@@ -14,4 +14,4 @@ openssl req -new -sha256 -key keys/domain.key -subj "/" -reqexts SAN -config ope
 ``` 
 4. `mv /etc/stunnel/stunnel.pem /etc/stunnel/stunnel.pem.orig`
 5. run `renew_certificate.sh`
-6. account.key, domain.key and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every week (preferrably in the night)
+6. account.key, domain.key and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night (certificate will only be renewed if <30 days left)
