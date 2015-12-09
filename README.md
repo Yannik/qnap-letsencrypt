@@ -1,4 +1,5 @@
 1. run `init.sh`
+2. you need to download a valid ca-bundle.crt to this directory
 2. create a csr:
 3. 
 **single domain cert:**
