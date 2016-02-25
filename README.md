@@ -97,5 +97,8 @@ export SSL_CERT_FILE=`pwd`/cacert.pem
 ```
 You can now copy this to `/etc/ssl/certs`. Alternatively, you can do this directly in `/etc/ssl/certs` if you want to, but remember, that it is lost after a reboot.
 
+#### How can I contribute anything to this project?
+Please open a pull request!
+
 #### What license is this code licensed under?
 GPLv2
