@@ -80,6 +80,7 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 
 #### What is actually surving a reboot?
   - Anything that is on a drive, e.g. `/share/CE_CACHEDEV1_DATA/`
+  - `/etc/stunnel/stunnel.pem` (the ssl certificate used for the webinterface) seems to survive a reboot
 
 #### What about surviving an firmware update?
 In my tests, all the above applied. I couldn't see anything additional being lost.
