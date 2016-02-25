@@ -12,20 +12,20 @@
 By default, there is no ca-bundle (bundle of root certificates which we should trust)
 installed. Therefore we will have to download one manually.
 
-1. on your local pc with an intact certificate store, run
+1. On your local pc with an intact certificate store, run
     ```
     curl -s https://curl.haxx.se/ca/cacert.pem | sha1sum
     ```
 
-2. on your nas, in the directory you want to install qnap-letsencrypt in, run
+2. On your nas, in the directory you want to install qnap-letsencrypt in, run
     ```
     wget --no-check-certificate https://curl.haxx.se/ca/cacert.pem
     sha1sum cacert.pem
     ```
 
-3. compare the hashes obtained in step 1 and 2, they must match.
+3. Compare the hashes obtained in step 1 and 2, they must match.
 
-4. on your nas, in the directory you were in before
+4. On your nas, in the directory you were in before
     ```
     git config --global http.sslVerify true
     git config --global http.sslCAinfo `pwd`/cacert.pem
@@ -36,9 +36,9 @@ installed. Therefore we will have to download one manually.
     ```
 
 ### Setting up qnap-letsencrypt
-1. run `init.sh`
+1. Run `init.sh`
 
-2. create a Certificate Signing Request(csr):
+2. Create a Certificate Signing Request(csr):
 
     **single domain cert:** (replace nas.xxx.de with your domain name)
     ```
@@ -53,7 +53,7 @@ installed. Therefore we will have to download one manually.
     ```
 4. `mv /etc/stunnel/stunnel.pem /etc/stunnel/stunnel.pem.orig` (backup)
 
-5. run `renew_certificate.sh`
+5. Run `renew_certificate.sh`
 
 6. account.key, domain.key and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night (certificate will only be renewed if <30 days left)
     example: (make sure to use crontab -e!)
