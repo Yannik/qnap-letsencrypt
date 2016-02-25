@@ -72,7 +72,7 @@ installed. Therefore we will have to download one manually.
 Anything that's added to one of the following directories is gone after a reboot:
   - `/root/` (`.gitconfig`, `.bash_history`)
   - `/share/` (with the exception of anything added to drives mounted there)
-  - `/etc/ssl/`
+  - `/etc/ssl/`, `/etc/ssl/certs`
 
 Additionally, the following is not surviving a reboot:
   - Cronjobs added using `crontab -e`
@@ -87,7 +87,9 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 In my tests, all the above applied. I couldn't see anything additional being lost.
 
 #### How to generate content of `/etc/ssl/certs`?
-In your qnap-letsencrypt directory
+First, install Perl from the qnap app manager.
+
+Then, in your qnap-letsencrypt directory:
 ```
 mkdir certs
 cat cacert.pem | awk 'split_after==1{n++;split_after=0} /-----END CERTIFICATE-----/ {split_after=1} {print > "certs/cert" n ".pem"}'
@@ -95,8 +97,25 @@ wget --ca-certificate cacert.pem https://raw.githubusercontent.com/ChatSecure/Op
 /opt/bin/perl c_rehash certs
 export SSL_CERT_FILE=`pwd`/cacert.pem
 ```
+
 You can now copy this to `/etc/ssl/certs`. Alternatively, you can do this directly in `/etc/ssl/certs` if you want to, but remember, that it is lost after a reboot.
 
+#### How to test whether a python script fails due to missing ca certificates
+
+```
+#from urllib.request import urlopen # Python 3
+#from urllib2 import urlopen # Python 2
+urlopen("https://google.com")
+```
+
+If you get this:
+```
+urllib2.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:581)>
+```
+
+there is something wrong.
+
+Remember to run `export SSL_CERT_FILE=cacert.pem` though, as it is done in `renew_certificates.sh`
 #### How can I contribute anything to this project?
 Please open a pull request!
 
