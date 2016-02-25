@@ -8,6 +8,10 @@
 3. Copy `init.sh` and `renew_certificate.sh` to this folder. For example, I will use `/share/scripts`
 
 ### Setting up a valid ca-bundle and cloning this repo
+
+By default, there is no ca-bundle (bundle of root certificates which we should trust)
+installed. Therefore we will have to download one manually.
+
 1. on your local pc with an intact certificate store, run
     ```
     curl -s https://curl.haxx.se/ca/cacert.pem | sha1sum
