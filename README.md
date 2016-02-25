@@ -72,6 +72,7 @@ installed. Therefore we will have to download one manually.
 Anything that's added to one of the following directories is gone after a reboot:
   - `/root/` (`.gitconfig`, `.bash_history`)
   - `/share/` (with the exception of anything added to drives mounted there)
+  - `/etc/ssl/`
 
 Additionally, the following is not surviving a reboot:
   - Cronjobs added using `crontab -e`
@@ -84,6 +85,17 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 
 #### What about surviving an firmware update?
 In my tests, all the above applied. I couldn't see anything additional being lost.
+
+#### How to generate content of `/etc/ssl/certs`?
+In your qnap-letsencrypt directory
+```
+mkdir certs
+cat cacert.pem | awk 'split_after==1{n++;split_after=0} /-----END CERTIFICATE-----/ {split_after=1} {print > "certs/cert" n ".pem"}'
+wget --ca-certificate cacert.pem https://raw.githubusercontent.com/ChatSecure/OpenSSL/master/tools/c_rehash
+/opt/bin/perl c_rehash certs
+export SSL_CERT_FILE=`pwd`/cacert.pem
+```
+You can now copy this to `/etc/ssl/certs`. Alternatively, you can do this directly in `/etc/ssl/certs` if you want to, but remember, that it is lost after a reboot.
 
 #### What license is this code licensed under?
 GPLv2
