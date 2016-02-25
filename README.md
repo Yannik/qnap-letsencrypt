@@ -77,4 +77,3 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 #### What is actually surving a reboot?
 
   - Anything that is on a drive, e.g. `/share/CE_CACHEDEV1_DATA/`
---- 
