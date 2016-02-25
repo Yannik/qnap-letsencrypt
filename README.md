@@ -75,5 +75,6 @@ Additionally, the following is not surviving a reboot:
 Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this they are only available after unlocking your disks encryption.
 
 #### What is actually surving a reboot?
+
   - Anything that is on a drive, e.g. `/share/CE_CACHEDEV1_DATA/`
 --- 
