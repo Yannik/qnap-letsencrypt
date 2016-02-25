@@ -81,5 +81,8 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 #### What is actually surving a reboot?
   - Anything that is on a drive, e.g. `/share/CE_CACHEDEV1_DATA/`
 
+#### What about surviving an firmware update?
+In my tests, all the above applied. I couldn't see anything additional being lost.
+
 #### What license is this code licensed under?
 GPLv2
