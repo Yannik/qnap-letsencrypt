@@ -54,23 +54,27 @@ installed. Therefore we will have to download one manually.
 
 5. Run `renew_certificate.sh`
 
-6. account.key, domain.key and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night (certificate will only be renewed if <30 days left)
-    example: (make sure to use crontab -e!)
-    ```
-    30 3 * * * cd /share/scripts && /share/scripts/renew_certificate.sh &>> /share/scripts/renew_certificate.log
-    ```
-    this should hopefully persist a reboot...
-    just to be sure, restart crond: `/etc/init.d/crond.sh restart` 
+6. `account.key`, `domain.key` and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night, which will renew your certificate if it has less than 30 days left
 
+Add this to `/etc/config/crontab`:
+    ```
+    30 3 * * * cd /share/CE_CACHEDEV1_DATA/qnap-letsencrypt/ && ./renew_certificate.sh >> ./renew_certificate.log 2>&1
+    ```
+
+Then run:
+    ````
+    crontab /etc/config/crontab
+    /etc/init.d/crond.sh restart
+    ````
 
 ### FAQ
 #### Why is xxx not working after a reboot?
 Anything that's added to one of the following directories is gone after a reboot:
   - `/root/` (`.gitconfig`, `.bash_history`)
-  - `/share/` (with the exception of actual drives mounted there)
+  - `/share/` (with the exception of anything added to drives mounted there)
 
 Additionally, the following is not surviving a reboot:
-  - `crontab`
+  - Cronjobs added using `crontab -e`
 
 Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this they are only available after unlocking your disks encryption.
 
