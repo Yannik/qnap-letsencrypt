@@ -4,8 +4,7 @@
 1. Login to your NAS and make sure the following Apps are installed:
       * Git
       * Python
-2. Create a folder to store the scripts in /share (Same level as the default Multimedia,Public folders)
-3. Copy `init.sh` and `renew_certificate.sh` to this folder. For example, I will use `/share/scripts`
+2. Create a folder to store qnap-letsencrypt in under /share (Same level as the default Multimedia,Public folders)
 
 ### Setting up a valid ca-bundle and cloning this repo
 
