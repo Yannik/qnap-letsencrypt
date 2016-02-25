@@ -57,15 +57,15 @@ installed. Therefore we will have to download one manually.
 6. `account.key`, `domain.key` and even the csr (according to acme-tiny readme) can be reused, so just create a cronjob to run `renew_certificate.sh` every night, which will renew your certificate if it has less than 30 days left
 
 Add this to `/etc/config/crontab`:
-    ```
-    30 3 * * * cd /share/CE_CACHEDEV1_DATA/qnap-letsencrypt/ && ./renew_certificate.sh >> ./renew_certificate.log 2>&1
-    ```
+```
+30 3 * * * cd /share/CE_CACHEDEV1_DATA/qnap-letsencrypt/ && ./renew_certificate.sh >> ./renew_certificate.log 2>&1
+```
 
 Then run:
-    ````
-    crontab /etc/config/crontab
-    /etc/init.d/crond.sh restart
-    ````
+```
+crontab /etc/config/crontab
+/etc/init.d/crond.sh restart
+```
 
 ### FAQ
 #### Why is xxx not working after a reboot?
