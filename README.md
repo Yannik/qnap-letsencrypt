@@ -4,7 +4,7 @@
 1. Login to your NAS and make sure the following Apps are installed:
       * Git
       * Python
-2. Create a folder to store qnap-letsencrypt in under /share (Same level as the default Multimedia,Public folders)
+2. Create a folder to store qnap-letsencrypt in under `/share/YOUR_DRIVE/`. Do not create it directly in `/share/`, as it will be lost after a reboot!
 
 ### Setting up a valid ca-bundle and cloning this repo
 
@@ -61,3 +61,19 @@ installed. Therefore we will have to download one manually.
     ```
     this should hopefully persist a reboot...
     just to be sure, restart crond: `/etc/init.d/crond.sh restart` 
+
+
+### FAQ
+#### Why is xxx not working after a reboot?
+Anything that's added to one of the following directories is gone after a reboot:
+  - `/root/` (`.gitconfig`, `.bash_history`)
+  - `/share/` (with the exception of actual drives mounted there)
+
+Additionally, the following is not surviving a reboot:
+  - `crontab`
+
+Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this they are only available after unlocking your disks encryption.
+
+#### What is actually surving a reboot?
+  - Anything that is on a drive, e.g. `/share/CE_CACHEDEV1_DATA/`
+--- 
