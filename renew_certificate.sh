@@ -2,7 +2,7 @@
 
 echo "Checking whether to renew certificate on $(date -R)"
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
-openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
+[ -f letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
 echo "Renewing certificate..."
 echo "Stopping Qthttpd hogging port 80.."
 
