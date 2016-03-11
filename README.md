@@ -90,6 +90,8 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 In my tests, all the above applied. I couldn't see anything additional being lost.
 
 #### How to generate content of `/etc/ssl/certs`?
+This is only documented as it was part of my research and is not needed for the letsencrypt certificate generation.
+
 First, install Perl from the qnap app manager.
 
 Then, in your qnap-letsencrypt directory:
