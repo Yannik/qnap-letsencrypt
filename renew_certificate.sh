@@ -1,8 +1,10 @@
 #!/bin/bash
+set -e
 
-echo "Checking whether to renew certificate on $(date -R)"
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
-[ -f letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
+echo "Checking whether to renew certificate on $(date -R)"
+[ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
+
 echo "Renewing certificate..."
 echo "Stopping Qthttpd hogging port 80.."
 
@@ -11,8 +13,8 @@ echo "Stopping Qthttpd hogging port 80.."
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
 python -m SimpleHTTPServer 80 &
-cd ..
 pid=$!
+cd ..
 echo "Started python SimpleHTTPServer with pid $pid"
 
 export SSL_CERT_FILE=cacert.pem
@@ -29,7 +31,7 @@ cp letsencrypt/intermediate.pem /etc/stunnel/uca.pem
 echo "Done! Service startup and cleanup will follow now..."
 /etc/init.d/stunnel.sh start
 
-kill -9 $pid
+kill -9 $pid || true
 rm -rf tmp-webroot
 
 /etc/init.d/Qthttpd.sh start
