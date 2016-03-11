@@ -49,8 +49,8 @@ installed. Therefore we will have to download one manually.
     **multiple domain cert:** (replace nas.xxx.de and xxx.myqnapcloud.com with your domain name)
     ```
     cd letsencypt
-    cp /etc/ssl/openssl.cnf openssl-csr-config.cnf
-    printf "[SAN]\nsubjectAltName=DNS:nas.xxx.de,DNS:xxx.myqnapcloud.com" >> openssl-csr-config.cnf
+    cp ../openssl.cnf openssl-csr-conf.cnf
+    printf "[SAN]\nsubjectAltName=DNS:nas.xxx.de,DNS:nas.xxx.com" >> openssl-csr-config.cnf
     openssl req -new -sha256 -key keys/domain.key -subj "/" -reqexts SAN -config openssl-csr-config.cnf > domain.csr
     ```
 4. `mv /etc/stunnel/stunnel.pem /etc/stunnel/stunnel.pem.orig` (backup)
