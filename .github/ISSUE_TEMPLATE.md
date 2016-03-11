@@ -1,4 +1,4 @@
-**Platform/Firmware Information:**
+**Platform/Firmware Information**
 
 ```
 Run
@@ -7,5 +7,7 @@ grep -e ^Version -e ^Build -e Model -e "\[" /etc/default_config/uLinux.conf | gr
 
 and paste it here!
 ```
+
+**Is this the latest firmware for your device?**
 
 **Issue Summary (provide relevant error messages and log output):**
