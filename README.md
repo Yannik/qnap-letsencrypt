@@ -46,7 +46,7 @@ installed. Therefore we will have to download one manually.
     openssl req -new -sha256 -key keys/domain.key -subj "/CN=nas.xxx.de" > domain.csr
     ```
 
-    **multiple domain cert:** (replace nas.xxx.de and xxx.myqnapcloud.com with your domain name)
+    **multiple domain cert:** (replace nas.xxx.de and nas.xxx.com with your domain names)
     ```
     cd letsencypt
     cp ../openssl.cnf openssl-csr-conf.cnf
