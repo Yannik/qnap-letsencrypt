@@ -3,8 +3,9 @@
 ### NAS Setup
 1. Login to your NAS and make sure the following Apps are installed:
       * Git
-      * Python
-2. Create a folder to store qnap-letsencrypt in under `/share/YOUR_DRIVE/`. Do not create it directly in `/share/`, as it will be lost after a reboot!
+      * Python (2.7 is recommended)
+2. Make sure your NAS is reachable from the public internet under the domain you want to get a certificate for on port 80.
+3. Create a folder to store qnap-letsencrypt in under `/share/YOUR_DRIVE/`. Do not create it directly in `/share/`, as it will be lost after a reboot!
 
 ### Setting up a valid ca-bundle and cloning this repo
 

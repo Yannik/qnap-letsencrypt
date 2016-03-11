@@ -17,7 +17,8 @@ echo "Started python SimpleHTTPServer with pid $pid"
 
 export SSL_CERT_FILE=cacert.pem
 python acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt
-wget -O - https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem > letsencrypt/intermediate.pem
+echo "Downloading intermediate certificate..."
+wget --no-verbose -O - https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem > letsencrypt/intermediate.pem
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
 
 echo "Stopping stunnel and setting new stunnel certificates..."
