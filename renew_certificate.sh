@@ -12,7 +12,7 @@ echo "Stopping Qthttpd hogging port 80.."
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
-python ../HTTPServerV6.py &
+python ../HTTPServer.py &
 pid=$!
 cd ..
 echo "Started python HTTP server with pid $pid"
