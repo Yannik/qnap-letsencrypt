@@ -12,10 +12,10 @@ echo "Stopping Qthttpd hogging port 80.."
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
-python -m SimpleHTTPServer 80 &
+python ../HTTPServer.py &
 pid=$!
 cd ..
-echo "Started python SimpleHTTPServer with pid $pid"
+echo "Started python HTTP server with pid $pid"
 
 export SSL_CERT_FILE=cacert.pem
 python acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt
