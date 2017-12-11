@@ -48,7 +48,7 @@ installed. Therefore we will have to download one manually.
 
     **multiple domain cert:** (replace nas.xxx.de and nas.xxx.com with your domain names)
     ```
-    cd letsencypt
+    cd letsencrypt
     cp ../openssl.cnf openssl-csr-config.cnf
     printf "subjectAltName=DNS:nas.xxx.de,DNS:nas.xxx.com" >> openssl-csr-config.cnf
     openssl req -new -sha256 -key keys/domain.key -subj "/" -reqexts SAN -config openssl-csr-config.cnf > domain.csr
