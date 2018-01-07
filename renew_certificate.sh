@@ -5,7 +5,9 @@ set -e
 echo "Checking whether to renew certificate on $(date -R)"
 [ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
 
-if /sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf; then
+if python -c "import SimpleHTTPServer"; then
+    PYTHON=python
+elif /sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf; then
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2"
 elif /sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf; then
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
