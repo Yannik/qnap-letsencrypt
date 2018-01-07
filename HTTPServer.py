@@ -1,7 +1,11 @@
 import socket
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+
 from threading import Thread
+try:
+  from BaseHTTPServer import HTTPServer
+  from SimpleHTTPServer import SimpleHTTPRequestHandler
+except ImportError:
+  from http.server import SimpleHTTPRequestHandler,HTTPServer
 
 class HTTPServerV6(HTTPServer):
   address_family = socket.AF_INET6
