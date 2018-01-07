@@ -1,10 +1,10 @@
 import socket
 
 from threading import Thread
-try:
+try: # Python 2
   from BaseHTTPServer import HTTPServer
   from SimpleHTTPServer import SimpleHTTPRequestHandler
-except ImportError:
+except ImportError: # Python 3
   from http.server import SimpleHTTPRequestHandler,HTTPServer
 
 class HTTPServerV6(HTTPServer):
