@@ -7,7 +7,9 @@ echo "Checking whether to renew certificate on $(date -R)"
 
 if python -c "import SimpleHTTPServer"; then
     PYTHON=python
-elif /sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf; then
+elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2" -c "import SimpleHTTPServer"; then
+    PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2"
+elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2" -c "import SimpleHTTPServer"; then
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2"
 elif /sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf; then
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
