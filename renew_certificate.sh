@@ -35,7 +35,7 @@ domains=(${domainstr//,/})
 for i in "${domains[@]}"; do
     if ! [[ $(wget -q -t 1 --spider --dns-timeout 3 --connect-timeout 5  $i:80; echo $?) -eq 0 ]]; then 
         echo -e  "Error: $i cannot be reached on port 80! check your DNS, port forwarding and firewall!"
-        exit
+        exit 1
     fi
 done
 
