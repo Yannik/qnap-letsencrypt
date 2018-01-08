@@ -30,15 +30,6 @@ pid=$!
 cd ..
 echo "Started python HTTP server with pid $pid"
 
-domainstr=$(openssl req -in letsencrypt/domain.csr -noout -text| sed -n 's/DNS://gp')
-domains=(${domainstr//,/})
-for i in "${domains[@]}"; do
-    if ! [[ $(wget -q -t 1 --spider --dns-timeout 3 --connect-timeout 5  $i:80; echo $?) -eq 0 ]]; then 
-        echo -e  "Error: $i cannot be reached on port 80! check your DNS, port forwarding and firewall!"
-        exit 1
-    fi
-done
-
 export SSL_CERT_FILE=cacert.pem
 "$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
