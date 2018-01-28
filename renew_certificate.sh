@@ -11,7 +11,7 @@ elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2" 
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2"
 elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2" -c "import SimpleHTTPServer"; then
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2"
-elif /sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf; then
+elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server"; then
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
 else
     echo "Error: You need to install the python 2.7 or 3.5 qpkg!"
