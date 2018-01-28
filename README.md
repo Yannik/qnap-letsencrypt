@@ -124,5 +124,8 @@ Remember to run `export SSL_CERT_FILE=cacert.pem` though, as it is done in `rene
 #### How can I contribute anything to this project?
 Please open a pull request!
 
+#### You want to buy me a coffee?
+Feel free to send a donation this way: https://www.paypal.me/qnapletsencrypt
+
 #### What license is this code licensed under?
 GPLv2
