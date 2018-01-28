@@ -5,13 +5,13 @@ set -e
 echo "Checking whether to renew certificate on $(date -R)"
 [ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
 
-if python -c "import SimpleHTTPServer"; then
+if python -c "import SimpleHTTPServer" 2> /dev/null; then
     PYTHON=python
-elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2" -c "import SimpleHTTPServer"; then
+elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2" -c "import SimpleHTTPServer" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/bin/python2"
-elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2" -c "import SimpleHTTPServer"; then
+elif "$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2" -c "import SimpleHTTPServer" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Python Install_Path -f /etc/config/qpkg.conf)/src/bin/python2"
-elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server"; then
+elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
 else
     echo "Error: You need to install the python 2.7 or 3.5 qpkg!"
