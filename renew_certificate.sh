@@ -48,3 +48,32 @@ kill -9 $pid || true
 rm -rf tmp-webroot
 
 /etc/init.d/Qthttpd.sh start
+# Nextcloud
+# certificat
+CONF=/etc/config/qpkg.conf
+QPKG_NAME="NextCloud"
+QPKG_ROOT=`/sbin/getcfg $QPKG_NAME Install_Path -f ${CONF}`
+
+### EXPORT
+export QPKG_ROOT
+
+if [ -f $QPKG_ROOT/server.crt ]
+
+then
+
+   echo "Found Nextcloud"
+   echo "stopping Nextcloud"
+   $QPKG_ROOT/NextCloud.sh stop
+
+   echo "installing certificates"
+   cp letsencrypt/keys/domain.key $QPKG_ROOT/server.key
+   cp letsencrypt/signed.crt $QPKG_ROOT/server.crt
+
+   echo "Done! Service Nextcloud startup"
+   $QPKG_ROOT/NextCloud.sh start
+
+else
+   echo "Nextcloud is not installed"
+
+fi
+
