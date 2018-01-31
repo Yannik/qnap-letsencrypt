@@ -1,4 +1,4 @@
-import socket
+import socket, errno
 
 from threading import Thread
 try: # Python 2
@@ -15,8 +15,14 @@ def main():
   servev6()
   
 def servev6():
-  server = HTTPServerV6(('::', 80), SimpleHTTPRequestHandler)
-  server.serve_forever()
+  try:
+    server = HTTPServerV6(('::', 80), SimpleHTTPRequestHandler)
+    server.serve_forever()
+  except socket.error as e:
+    if e.errno == errno.EAFNOSUPPORT: # system doesn't support ipv6
+      pass
+    else:
+      raise
   
 def servev4():
   server = HTTPServer(('0.0.0.0', 80), SimpleHTTPRequestHandler)
