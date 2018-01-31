@@ -1,11 +1,15 @@
 # Let's Encrypt on QNAP
 ## Install Instructions
 ### NAS Setup
-1. Login to your NAS and make sure the following Apps are installed:
-      * Git
-      * Python 2.7
+1. Login to your NAS and make sure that the `Python 2.7` app is installed.
 2. Make sure your NAS is reachable from the public internet under the domain you want to get a certificate for on port 80.
 3. Create a folder to store qnap-letsencrypt in under `/share/YOUR_DRIVE/`. Do not create it directly in `/share/`, as it will be lost after a reboot!
+
+### Installing git
+If there is a git package available for your NAS model in the QNAP App-Center, use that. 
+Otherwise, [install entware](https://github.com/Entware-ng/Entware-ng/wiki/Install-on-QNAP-NAS). Apart from git, it provides many more useful packages.
+
+After logging out and in again, you can use `opkg install git` to install git.
 
 ### Setting up a valid ca-bundle and cloning this repo
 
