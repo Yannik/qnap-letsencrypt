@@ -12,7 +12,11 @@ class HTTPServerV6(HTTPServer):
 
 def main():
   Thread(target=servev4).start()
-  servev6()
+  try:
+    servev6()
+  except OSError, e:
+    if not e == errno.EAFNOSUPPORT:
+      raise
   
 def servev6():
   server = HTTPServerV6(('::', 80), SimpleHTTPRequestHandler)
