@@ -7,7 +7,7 @@
 
 ### Installing git
 If there is a git package available for your NAS model in the QNAP App-Center, use that. 
-Otherwise, [install entware](https://github.com/Entware-ng/Entware-ng/wiki/Install-on-QNAP-NAS). Apart from git, it provides many more useful packages.
+Otherwise, [install entware](https://github.com/Entware/Entware/wiki/Install-on-QNAP-NAS). Apart from git, it provides many more useful packages. You may need to install `git-http` in addition to `git`.
 
 After logging out and in again, you can use `opkg install git` to install git.
 
