@@ -14,8 +14,8 @@ def main():
   Thread(target=servev4).start()
   try:
     servev6()
-  except OSError, e:
-    if not e == errno.EAFNOSUPPORT:
+  except OSError as e:
+    if not e.errno == errno.EAFNOSUPPORT:
       raise
   
 def servev6():
