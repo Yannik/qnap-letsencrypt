@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -o errexit
 
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
 echo "Checking whether to renew certificate on $(date -R)"
@@ -31,7 +31,8 @@ cd ..
 echo "Started python HTTP server with pid $pid"
 
 export SSL_CERT_FILE=cacert.pem
-"$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt
+"$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt.tmp
+mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
 wget --no-verbose -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > letsencrypt/intermediate.pem
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
