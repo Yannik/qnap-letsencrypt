@@ -31,7 +31,9 @@ cd ..
 echo "Started python HTTP server with pid $pid"
 
 export SSL_CERT_FILE=cacert.pem
-"$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt
+"$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/cert.pem.temp
+if [ -f letsencrypt/cert.pem.temp ] && [ -s letsencrypt/cert.pem.temp ] ; then
+mv letsencrypt/cert.pem.temp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
 wget --no-verbose -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > letsencrypt/intermediate.pem
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
@@ -43,7 +45,7 @@ cp letsencrypt/intermediate.pem /etc/stunnel/uca.pem
 
 echo "Done! Service startup and cleanup will follow now..."
 /etc/init.d/stunnel.sh start
-
+fi
 kill -9 $pid || true
 rm -rf tmp-webroot
 
