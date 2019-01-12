@@ -15,7 +15,7 @@ elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
 elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python" -c "import SimpleHTTPServer" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python"
-elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import SimpleHTTPServer" 2> /dev/null; then
+elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3"
 else
     echo "Error: You need to install the python 2.7 or 3.5 qpkg!"
