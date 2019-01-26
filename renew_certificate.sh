@@ -1,6 +1,16 @@
 #!/bin/bash
 set -o errexit
 
+trap cleanup ERR
+
+cleanup() {
+  echo "An error occured. Restoring system state."
+  [ -n "$pid" ] && kill -9 $pid
+  rm -rf tmp-webroot
+  /etc/init.d/stunnel.sh start
+  /etc/init.d/Qthttpd.sh start
+}
+
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
 echo "Checking whether to renew certificate on $(date -R)"
 [ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
@@ -47,9 +57,5 @@ cat letsencrypt/keys/domain.key letsencrypt/chained.pem > /etc/stunnel/stunnel.p
 cp letsencrypt/intermediate.pem /etc/stunnel/uca.pem
 
 echo "Done! Service startup and cleanup will follow now..."
-/etc/init.d/stunnel.sh start
 
-kill -9 $pid || true
-rm -rf tmp-webroot
-
-/etc/init.d/Qthttpd.sh start
+cleanup
