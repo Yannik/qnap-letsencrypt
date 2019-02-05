@@ -44,7 +44,7 @@ pid=$!
 cd ..
 echo "Started python HTTP server with pid $pid"
 
-export SSL_CERT_FILE=cacert.pem
+export SSL_CERT_FILE=/opt/etc/ssl/certs/ca-certificates.crt
 "$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt.tmp
 mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
