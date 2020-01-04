@@ -48,7 +48,7 @@ export SSL_CERT_FILE=cacert.pem
 "$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt.tmp
 mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
-wget --no-verbose -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > letsencrypt/intermediate.pem
+wget --no-verbose --secure-protocol=TLSv1_2 -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > letsencrypt/intermediate.pem
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
 
 echo "Stopping stunnel and setting new stunnel certificates..."
