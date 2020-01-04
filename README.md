@@ -46,16 +46,14 @@ installed. Therefore we will have to download one manually.
 
     **single domain cert:** (replace nas.xxx.de with your domain name)
     ```
-    cd letsencrypt
-    openssl req -new -sha256 -key keys/domain.key -subj "/CN=nas.xxx.de" > domain.csr
+    openssl req -new -sha256 -key keys/domain.key -subj "/CN=nas.xxx.de" > letsencrypt/domain.csr
     ```
 
     **multiple domain cert:** (replace nas.xxx.de and nas.xxx.com with your domain names)
     ```
-    cd letsencrypt
-    cp ../openssl.cnf openssl-csr-config.cnf
-    printf "subjectAltName=DNS:nas.xxx.de,DNS:nas.xxx.com" >> openssl-csr-config.cnf
-    openssl req -new -sha256 -key keys/domain.key -subj "/" -reqexts SAN -config openssl-csr-config.cnf > domain.csr
+    cp openssl.cnf letsencrypt/openssl-csr-config.cnf
+    printf "subjectAltName=DNS:nas.xxx.de,DNS:nas.xxx.com" >> letsencrypt/openssl-csr-config.cnf
+    openssl req -new -sha256 -key letsencrypt/keys/domain.key -subj "/" -reqexts SAN -config letsencrypt/openssl-csr-config.cnf > letsencrypt/domain.csr
     ```
 4. `mv /etc/stunnel/stunnel.pem /etc/stunnel/stunnel.pem.orig` (backup)
 
