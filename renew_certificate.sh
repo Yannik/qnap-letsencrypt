@@ -38,7 +38,7 @@ echo "Stopping Qthttpd hogging port 80.."
 /etc/init.d/Qthttpd.sh stop
 
 echo "Killing old python processes hogging port 80"
-lsof -i tcp:80 -a -c python -t | xargs kill
+lsof -i tcp:80 -a -c python -t | xargs --no-run-if-empty kill
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
