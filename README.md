@@ -46,7 +46,7 @@ installed. Therefore we will have to download one manually.
 
     **single domain cert:** (replace nas.xxx.de with your domain name)
     ```
-    openssl req -new -sha256 -key keys/domain.key -subj "/CN=nas.xxx.de" > letsencrypt/domain.csr
+    openssl req -new -sha256 -key letsencrypt/keys/domain.key -subj "/CN=nas.xxx.de" > letsencrypt/domain.csr
     ```
 
     **multiple domain cert:** (replace nas.xxx.de and nas.xxx.com with your domain names)
