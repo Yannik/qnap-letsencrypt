@@ -63,7 +63,7 @@ installed. Therefore we will have to download one manually.
 
     Add this to `/etc/config/crontab`:
     ```
-    30 3 * * * /share/CE_CACHEDEV1_DATA/qnap-letsencrypt/renew_certificate.sh >> ./renew_certificate.log 2>&1
+    30 3 * * * cd /share/CE_CACHEDEV1_DATA/qnap-letsencrypt/ && ./renew_certificate.sh >> ./renew_certificate.log 2>&1
     ```
 
     Then run:
