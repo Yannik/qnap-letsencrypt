@@ -11,6 +11,9 @@ cleanup() {
   /etc/init.d/Qthttpd.sh start
 }
 
+SCRIPT_DIR=$(dirname "$(readlink -f -- "$0")")
+cd "$SCRIPT_DIR"
+
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
 echo "Checking whether to renew certificate on $(date -R)"
 [ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
