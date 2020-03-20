@@ -3,8 +3,25 @@ set -o errexit
 
 trap cleanup ERR
 
+# Obtain base dir no matter this script is running with absolute or relative path
+mydir () {
+     SOURCE="${BASH_SOURCE[0]}"
+     # While $SOURCE is a symlink, resolve it.
+	 # Very possible when qnap-letsencrypt is put at shared folders.
+     while [ -h "$SOURCE" ]; do
+          DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+          SOURCE="$( readlink "$SOURCE" )"
+          # If $SOURCE was a relative symlink (so no "/" as prefix, need to resolve it relative to the symlink base directory
+          [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+     done
+     DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+     echo "$DIR"
+}
+
 cleanup() {
   echo "An error occured. Restoring system state."
+  # Force cd again to the root folder of letsencrypt to prevent accident.
+  cd "$(mydir)"
   [ -n "$pid" ] && kill -9 $pid
   rm -rf tmp-webroot
   /etc/init.d/stunnel.sh start
@@ -31,6 +48,9 @@ else
     echo "Error: You need to install the python 2.7 or 3.5 qpkg!"
     exit 1
 fi
+
+# cd to the location of letsencrypt's script. So incoming relative path will work normally.
+cd "$(mydir)"
 
 echo "Renewing certificate..."
 echo "Stopping Qthttpd hogging port 80.."
