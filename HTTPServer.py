@@ -1,6 +1,5 @@
 import socket, errno
 
-from threading import Thread
 from http.server import SimpleHTTPRequestHandler,HTTPServer
 
 class HTTPServerV6(HTTPServer):
@@ -10,7 +9,7 @@ def main():
   try:
     serve()
   except OSError as e:
-    if e.errno == errno.EAFNOSUPPORT:
+    if e.errno == errno.EAFNOSUPPORT: # system doesn't support ipv6
       servev4only()
     else:
       raise
@@ -20,12 +19,7 @@ def serve():
   try:
     server = HTTPServerV6(('::', 80), SimpleHTTPRequestHandler)
     server.serve_forever()
-  except socket.error as e:
-    if e.errno == errno.EAFNOSUPPORT: # system doesn't support ipv6
-      pass
-    else:
-      raise
-  
+ 
 def servev4only():
   print("Serving v4 only")
   server = HTTPServer(('0.0.0.0', 80), SimpleHTTPRequestHandler)
