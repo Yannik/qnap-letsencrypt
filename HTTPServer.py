@@ -1,11 +1,7 @@
 import socket, errno
 
 from threading import Thread
-try: # Python 2
-  from BaseHTTPServer import HTTPServer
-  from SimpleHTTPServer import SimpleHTTPRequestHandler
-except ImportError: # Python 3
-  from http.server import SimpleHTTPRequestHandler,HTTPServer
+from http.server import SimpleHTTPRequestHandler,HTTPServer
 
 class HTTPServerV6(HTTPServer):
   address_family = socket.AF_INET6
