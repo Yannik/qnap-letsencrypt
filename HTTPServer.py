@@ -7,14 +7,16 @@ class HTTPServerV6(HTTPServer):
   address_family = socket.AF_INET6
 
 def main():
-  Thread(target=servev4).start()
   try:
-    servev6()
+    serve()
   except OSError as e:
-    if not e.errno == errno.EAFNOSUPPORT:
+    if e.errno == errno.EAFNOSUPPORT:
+      servev4only()
+    else:
       raise
   
-def servev6():
+# serves both v4 and v6
+def serve():
   try:
     server = HTTPServerV6(('::', 80), SimpleHTTPRequestHandler)
     server.serve_forever()
@@ -24,7 +26,8 @@ def servev6():
     else:
       raise
   
-def servev4():
+def servev4only():
+  print("Serving v4 only")
   server = HTTPServer(('0.0.0.0', 80), SimpleHTTPRequestHandler)
   server.serve_forever()
 
