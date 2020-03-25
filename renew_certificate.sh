@@ -1,10 +1,14 @@
 #!/bin/bash
 set -o errexit
 
-trap cleanup ERR
+trap error_cleanup ERR
+
+error_cleanup() {
+  echo "An error occured. Restoring system state."
+  cleanup
+}
 
 cleanup() {
-  echo "An error occured. Restoring system state."
   [ -n "$pid" ] && kill -9 $pid
   rm -rf tmp-webroot
   /etc/init.d/stunnel.sh start
