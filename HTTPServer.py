@@ -9,7 +9,7 @@ def main():
   try:
     serve()
   except OSError as e:
-    if e.errno == errno.EAFNOSUPPORT: # system doesn't support ipv6
+    if e.errno == errno.EAFNOSUPPORT or str(e) == 'getsockaddrarg: bad family':
       print("Serving v4 only")
       servev4only()
     else:
