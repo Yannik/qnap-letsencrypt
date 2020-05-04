@@ -61,6 +61,14 @@ echo "Stopping stunnel and setting new stunnel certificates..."
 cat letsencrypt/keys/domain.key letsencrypt/chained.pem > /etc/stunnel/stunnel.pem
 cp letsencrypt/intermediate.pem /etc/stunnel/uca.pem
 
+# FTP
+cp letsencrypt/keys/domain.key /etc/config/stunnel/backup.key
+cp letsencrypt/signed.crt /etc/config/stunnel/backup.cert
+if pidof proftpd > /dev/null; then
+    echo "Restarting FTP"
+    /etc/init.d/ftp.sh restart
+fi
+
 echo "Done! Service startup and cleanup will follow now..."
 
 cleanup
