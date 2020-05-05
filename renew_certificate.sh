@@ -66,7 +66,7 @@ cp letsencrypt/keys/domain.key /etc/config/stunnel/backup.key
 cp letsencrypt/signed.crt /etc/config/stunnel/backup.cert
 if pidof proftpd > /dev/null; then
     echo "Restarting FTP"
-    /etc/init.d/ftp.sh restart
+    /etc/init.d/ftp.sh restart || true
 fi
 
 echo "Done! Service startup and cleanup will follow now..."
