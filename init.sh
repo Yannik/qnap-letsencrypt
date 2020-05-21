@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 git clone https://github.com/diafygi/acme-tiny.git
 mkdir -p letsencrypt/keys
 cd letsencrypt
