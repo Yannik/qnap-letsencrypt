@@ -15,8 +15,12 @@ cleanup() {
   /etc/init.d/Qthttpd.sh start
 }
 
-SCRIPT_DIR=$(dirname "$(readlink -f -- "$0")")
-cd "$SCRIPT_DIR"
+SCRIPT_DIR="${BASH_SOURCE[0]}";
+if ([ -h "${SCRIPT_DIR}" ]) then
+  while([ -h "${SCRIPT_DIR}" ]) do cd `dirname "$SCRIPT_DIR"`; SCRIPT_DIR=`readlink "${SCRIPT_DIR}"`; done
+fi
+cd `dirname ${SCRIPT_DIR}` > /dev/null
+SCRIPT_DIR=`pwd`;
 
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
 echo "Checking whether to renew certificate on $(date -R)"
