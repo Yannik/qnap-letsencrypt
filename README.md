@@ -18,7 +18,7 @@ installed. Therefore we will have to download one manually.
 
 1. On your local pc with an intact certificate store, run
     ```
-    curl --silent https://curl.haxx.se/ca/cacert.pem | sha1sum
+    curl --silent https://curl.se/ca/cacert.pem | sha1sum
     ```
 
 2. On your nas, in the directory you want to install qnap-letsencrypt in, run

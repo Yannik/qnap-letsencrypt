@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -o errexit
 
 trap error_cleanup ERR
@@ -40,7 +40,7 @@ echo "Stopping Qthttpd hogging port 80.."
 
 /etc/init.d/Qthttpd.sh stop
 
-lsof -i tcp:80 -a -c python -t | xargs --no-run-if-empty -I {} sh -c 'echo "Killing old python process {} hogging port 80" && kill {} && sleep 1'
+lsof -i tcp:80 -a -c python -t | xargs -r -I {} sh -c 'echo "Killing old python process {} hogging port 80" && kill {} && sleep 1'
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
@@ -53,7 +53,7 @@ export SSL_CERT_FILE=cacert.pem
 "$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt.tmp
 mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
-wget --no-verbose --secure-protocol=TLSv1_2 -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > letsencrypt/intermediate.pem
+wget --no-verbose --secure-protocol=TLSv1_2 -O - https://letsencrypt.org/certs/lets-encrypt-r3.pem > letsencrypt/intermediate.pem
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
 
 echo "Stopping stunnel and setting new stunnel certificates..."
@@ -66,7 +66,7 @@ cp letsencrypt/keys/domain.key /etc/config/stunnel/backup.key
 cp letsencrypt/signed.crt /etc/config/stunnel/backup.cert
 if pidof proftpd > /dev/null; then
     echo "Restarting FTP"
-    /etc/init.d/ftp.sh restart
+    /etc/init.d/ftp.sh restart || true
 fi
 
 echo "Done! Service startup and cleanup will follow now..."
