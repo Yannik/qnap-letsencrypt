@@ -34,7 +34,7 @@ else
 fi
 
 echo "Renewing certificate..."
-echo "qnap-letsencrypt version: $(git rev-parse --short HEAD)"
+[ -e .git ] && echo "qnap-letsencrypt version: $(git rev-parse --short HEAD)"
 echo "Using python path: $PYTHON"
 echo "Stopping Qthttpd hogging port 80.."
 
