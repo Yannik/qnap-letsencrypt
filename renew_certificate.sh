@@ -24,6 +24,8 @@ echo "Checking whether to renew certificate on $(date -R)"
 
 if python3 -c "import http.server" 2> /dev/null; then
     PYTHON=python3
+elif "$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
+    PYTHON="$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3"
 elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server" 2> /dev/null; then
     PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
 elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
