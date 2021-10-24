@@ -7,15 +7,13 @@ RENEWAL_HTTP_PORT=80
 # Keep this key at a safe location
 PRIVATE_DOMAIN_KEY="letsencrypt/keys/domain.key"
 
-usage()
-{
+usage() {
   echo "Usage:   renew_certificate.sh [-f|--force]"
   echo "Options:"
   echo "  -f [ --force ]        Force certificate renewal"
   echo "  -? [ --help ]         Display help message"
 }
 
-# Function to print failure message
 msg_renewal_failed() {
   echo ""
   echo "***********************************"
@@ -41,21 +39,17 @@ SCRIPT_DIR=$(dirname "$(readlink -f -- "$0")")
 cd "$SCRIPT_DIR"
 
 FORCE_RENEWAL=0
-for i in "$@"
-do
+for i in "$@"; do
   case $i in
-    # display usage
     "-?"|"--help")
     usage
     exit
     ;;
-    # force renewal
     "-f"|"--force")
     FORCE_RENEWAL=1
     shift
     ;;
     *)
-    # argument error
     echo "ArgumentError: Unknown option $i"
     exit 1
     ;;
@@ -73,9 +67,9 @@ if [ $FORCE_RENEWAL -eq 0 ]; then
 fi
 
 if python3 -c "import http.server" 2> /dev/null; then
-    PYTHON=python3
+  PYTHON=python3
 elif "$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
-    PYTHON="$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3"
+  PYTHON="$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3"
 elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server" 2> /dev/null; then
   PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
 elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
