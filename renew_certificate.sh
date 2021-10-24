@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# Constants to customize
-# Custom HTTP port on QNAP for acme challenge,
-# in your router external HTTP port 80 must then be forwarded to this port
-RENEWAL_HTTP_PORT=80
-# Keep this key at a safe location
-PRIVATE_DOMAIN_KEY="letsencrypt/keys/domain.key"
-
 usage() {
   echo "Usage:   renew_certificate.sh [-f|--force]"
   echo "Options:"
@@ -90,14 +83,14 @@ echo "Stopping Qthttpd hogging port 80..."
 
 /etc/init.d/Qthttpd.sh stop
 
-lsof -i tcp:$RENEWAL_HTTP_PORT -a -c python -t | xargs -r -I {} sh -c 'echo "Killing old python process {} hogging port $RENEWAL_HTTP_PORT" && kill {} && sleep 1'
+lsof -i tcp:80 -a -c python -t | xargs -r -I {} sh -c 'echo "Killing old python process {} hogging port 80" && kill {} && sleep 1'
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
-"$PYTHON" ../HTTPServer.py $RENEWAL_HTTP_PORT &
+"$PYTHON" ../HTTPServer.py &
 pid=$!
 cd ..
-echo "Started Python HTTP server on port $RENEWAL_HTTP_PORT with pid $pid."
+echo "Started Python HTTP server on port 80 with pid $pid."
 
 # Setup up-to-date certificates and bypass system certificate store
 export SSL_CERT_FILE=cacert.pem
@@ -111,11 +104,11 @@ cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pe
 
 echo "Stopping stunnel and setting new stunnel certificates..."
 /etc/init.d/stunnel.sh stop
-cat "$PRIVATE_DOMAIN_KEY" letsencrypt/chained.pem > /etc/stunnel/stunnel.pem
+cat letsencrypt/keys/domain.key letsencrypt/chained.pem > /etc/stunnel/stunnel.pem
 cp letsencrypt/intermediate.pem /etc/stunnel/uca.pem
 
 # FTP
-cp "$PRIVATE_DOMAIN_KEY" /etc/config/stunnel/backup.key
+cp letsencrypt/keys/domain.key /etc/config/stunnel/backup.key
 cp letsencrypt/signed.crt /etc/config/stunnel/backup.cert
 if pidof proftpd > /dev/null; then
   echo "Restarting FTP..."
