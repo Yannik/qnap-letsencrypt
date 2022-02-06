@@ -1,7 +1,7 @@
 # Let's Encrypt on QNAP
 ## Install Instructions
 ### NAS Setup
-1. Login to your NAS and make sure that the `Python 3.5` app is installed.
+1. Login to your NAS and make sure that you have installed Python from the QNAP store. In some cases, it may be necessary to install Python from entware or qnapclub (see https://github.com/Yannik/qnap-letsencrypt/issues/113#issuecomment-1030516606).
 2. Make sure your NAS is reachable from the public internet under the domain you want to get a certificate for on port 80.
 3. Create a folder to store qnap-letsencrypt in under `/share/YOUR_DRIVE/`. Do not create it directly in `/share/`, as it will be lost after a reboot!
 
