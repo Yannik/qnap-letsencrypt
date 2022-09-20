@@ -16,7 +16,7 @@ cleanup() {
 }
 
 # from https://stackoverflow.com/questions/29832037/how-to-get-script-directory-in-posix-sh
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 cd "$SCRIPT_DIR"
 
 # do nothing if certificate is valid for more than 30 days (30*24*60*60)
