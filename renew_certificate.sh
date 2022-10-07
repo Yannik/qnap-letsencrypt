@@ -43,14 +43,17 @@ echo "Stopping Qthttpd hogging port 80.."
 
 /etc/init.d/Qthttpd.sh stop
 
-lsof -i tcp:80 -a -c python -t | /opt/bin/xargs -r -I {} sh -c 'echo "Killing old python process {} hogging port 80" && kill {} && sleep 1'
+for PID in $(lsof -i tcp:80 -a -c python -t)
+do
+    echo "Killing old python process $PID hogging port 80" && kill $PID && sleep 1
+done
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
 cd tmp-webroot
 "$PYTHON" ../HTTPServer.py &
-pid=$!
+PID=$!
 cd ..
-echo "Started python HTTP server with pid $pid"
+echo "Started python HTTP server with pid $PID"
 
 # Setup up-to-date certificates and bypass system certificate store
 export SSL_CERT_FILE=cacert.pem
