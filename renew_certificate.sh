@@ -45,7 +45,9 @@ echo "Stopping Qthttpd hogging port 80.."
 
 for PID in $(lsof -i tcp:80 -a -c python -t)
 do
-    echo "Killing old python process $PID hogging port 80" && kill $PID && sleep 1
+    echo "Killing old python process $PID hogging port 80" 
+    kill $PID 
+    sleep 1
 done
 
 mkdir -p tmp-webroot/.well-known/acme-challenge
