@@ -60,8 +60,11 @@ export SSL_CERT_DIR=/dev/null
 mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
 echo "Downloading intermediate certificate..."
 
-INTERMEDIATE=$(openssl x509 -issuer -noout -in letsencrypt/signed.crt | awk -F= '{print $NF}')
-wget --no-verbose --secure-protocol=TLSv1_2 -O - https://letsencrypt.org/certs/lets-encrypt-$INTERMEDIATE.pem > letsencrypt/intermediate.pem
+# intermediate uri parsing from https://stackoverflow.com/a/68637388
+INTERMEDIATE=$(openssl x509 -noout -text -in letsencrypt/signed.crt | awk '/^[ \t]+CA Issuers[ \t]+-[ \t]+URI:/ { print gensub(/^.*URI:(.*)$/,"\\1","g",$0); }')
+wget --no-verbose --secure-protocol=TLSv1_2 -O - $INTERMEDIATE > letsencrypt/intermediate.cer
+# convert downloaded DER format to PEM format
+openssl x509 -out letsencrypt/intermediate.pem -in letsencrypt/intermediate.cer -inform DER -outform PEM
 cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
 
 echo "Stopping stunnel and setting new stunnel certificates..."
