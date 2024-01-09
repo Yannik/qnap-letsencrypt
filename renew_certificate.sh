@@ -9,7 +9,7 @@ error_cleanup() {
 }
 
 cleanup() {
-  [ -n "$pid" ] && kill -9 $pid
+  [ -n "$PID" ] && kill -9 $PID
   rm -rf tmp-webroot
   /etc/init.d/stunnel.sh start
   /etc/init.d/Qthttpd.sh start
