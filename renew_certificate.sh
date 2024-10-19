@@ -42,7 +42,7 @@ done
 
 if [ -z "$PYTHON" ]; then
     echo "Error: Unable to find proper Python3 installation!"
-    echo "You may need to install Python3 from Entware."
+    echo "Try again after intalling Python3 from QNAP App Center (or from Entware if App Center package doesn't work)."
     exit 1
 fi
 
