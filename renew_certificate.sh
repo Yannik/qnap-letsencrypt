@@ -23,16 +23,26 @@ cd "$SCRIPT_DIR"
 echo "Checking whether to renew certificate on $(date -R)"
 [ -s letsencrypt/signed.crt ] && openssl x509 -noout -in letsencrypt/signed.crt -checkend 2592000 && exit
 
-if python3 -c "import http.server" 2> /dev/null; then
-    PYTHON=python3
-elif "$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
-    PYTHON="$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3"
-elif "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3" -c "import http.server" 2> /dev/null; then
-    PYTHON="$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
-elif "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3" -c "import http.server" 2> /dev/null; then
-    PYTHON="$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3"
-else
-    echo "Error: You need to install the python 3.5 qpkg!"
+# test and find proper Python3 intallation
+python_paths=(
+    "python3"
+    "$(/sbin/getcfg QPython3 Install_Path -f /etc/config/qpkg.conf)/bin/python3"
+    "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
+    "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/opt/python3/bin/python3"
+    "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3"
+)
+
+PYTHON=""
+for path in "${python_paths[@]}"; do
+    if $path -c "import http.server; import ssl" 2> /dev/null; then
+        PYTHON=$path
+        break
+    fi
+done
+
+if [ -z "$PYTHON" ]; then
+    echo "Error: Unable to find proper Python3 installation!"
+    echo "Try again after intalling Python3 from QNAP App Center (or from Entware if App Center package doesn't work)."
     exit 1
 fi
 
