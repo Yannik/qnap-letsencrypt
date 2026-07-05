@@ -73,14 +73,14 @@ export SSL_CERT_DIR=/dev/null
 
 "$PYTHON" acme-tiny/acme_tiny.py --account-key letsencrypt/account.key --csr letsencrypt/domain.csr --acme-dir tmp-webroot/.well-known/acme-challenge > letsencrypt/signed.crt.tmp
 mv letsencrypt/signed.crt.tmp letsencrypt/signed.crt
-echo "Downloading intermediate certificate..."
+echo "Extracting intermediate certificates..."
 
-# intermediate uri parsing from https://stackoverflow.com/a/68637388
-INTERMEDIATE=$(openssl x509 -noout -text -in letsencrypt/signed.crt | awk '/^[ \t]+CA Issuers[ \t]+-[ \t]+URI:/ { print gensub(/^.*URI:(.*)$/,"\\1","g",$0); }')
-wget --no-verbose --secure-protocol=TLSv1_2 -O - $INTERMEDIATE > letsencrypt/intermediate.cer
-# convert downloaded DER format to PEM format
-openssl x509 -out letsencrypt/intermediate.pem -in letsencrypt/intermediate.cer -inform DER -outform PEM
-cat letsencrypt/signed.crt letsencrypt/intermediate.pem > letsencrypt/chained.pem
+# acme-tiny outputs the full certificate chain (leaf + all intermediates).
+# Extract everything after the leaf, as the chain can contain multiple
+# intermediates (e.g. YR1 + cross-signed Root YR since Let's Encrypt's
+# Generation Y hierarchy, see issue #132)
+awk '/-----BEGIN CERTIFICATE-----/{n++} n>=2' letsencrypt/signed.crt > letsencrypt/intermediate.pem
+cp letsencrypt/signed.crt letsencrypt/chained.pem
 
 echo "Stopping stunnel and setting new stunnel certificates..."
 /etc/init.d/stunnel.sh stop
