@@ -30,7 +30,7 @@ python_paths=(
     "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/python3/bin/python3"
     "$(/sbin/getcfg Python3 Install_Path -f /etc/config/qpkg.conf)/opt/python3/bin/python3"
     "$(/sbin/getcfg Entware Install_Path -f /etc/config/qpkg.conf)/bin/python3"
-)
+) || true  # getcfg fails for absent packages; don't let errexit abort here
 
 PYTHON=""
 for path in "${python_paths[@]}"; do
