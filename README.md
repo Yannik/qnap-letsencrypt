@@ -8,37 +8,17 @@
 
 ### Installing git and python
 1. [Install entware](https://github.com/Entware/Entware/wiki/Install-on-QNAP-NAS).
-2. Install git: `opkg install git git-http`
-3. Install python: `opkg install python3`
+2. Update entware package list: `opkg update`
+3. Install git: `opkg install git git-http`
+4. Install python: `opkg install python3`
 
 If you don't want to install entware, you can also try the git / python packages from qnap store. However, these are often incomplete (for example: compiled without ssl or ipv6 support), so no support is provided if you don't use entware.
 
-### Setting up a valid ca-bundle and cloning this repo
-
-By default, there is no ca-bundle (bundle of root certificates which we should trust)
-installed. Therefore we will have to download one manually.
-
-1. On your local pc with an intact certificate store, run
+### Cloning this repo
+1. On your nas, in the directory you want to install qnap-letsencrypt in, run
     ```
-    curl --silent https://curl.se/ca/cacert.pem | sha1sum
-    ```
-
-2. On your nas, in the directory you want to install qnap-letsencrypt in, run
-    ```
-    curl --silent --location --remote-name --insecure https://curl.haxx.se/ca/cacert.pem
-    sha1sum cacert.pem
-    ```
-
-3. Compare the hashes obtained in step 1 and 2, they must match.
-
-4. On your nas, in the directory you were in before
-    ```
-    git config --system http.sslVerify true
-    git config --system http.sslCAinfo `pwd`/cacert.pem
     git clone https://github.com/Yannik/qnap-letsencrypt.git
-    mv cacert.pem qnap-letsencrypt
     cd qnap-letsencrypt
-    git config --system http.sslCAinfo `pwd`/cacert.pem
     ```
 
 ### Setting up qnap-letsencrypt
@@ -93,37 +73,6 @@ Note that qpkgs get installed to `/share/CE_CACHEDEV1_DATA/.qpkg`. Due to this t
 #### What about surviving an firmware update?
 In my tests, all the above applied. I couldn't see anything additional being lost.
 
-#### How to generate content of `/etc/ssl/certs`?
-This is only documented as it was part of my research and is not needed for the letsencrypt certificate generation.
-
-First, install Perl from the qnap app manager.
-
-Then, in your qnap-letsencrypt directory:
-```
-mkdir certs
-cat cacert.pem | awk 'split_after==1{n++;split_after=0} /-----END CERTIFICATE-----/ {split_after=1} {print > "certs/cert" n ".pem"}'
-wget --ca-certificate cacert.pem https://raw.githubusercontent.com/ChatSecure/OpenSSL/master/tools/c_rehash
-/opt/bin/perl c_rehash certs
-export SSL_CERT_FILE=`pwd`/cacert.pem
-```
-
-You can now copy this to `/etc/ssl/certs`. Alternatively, you can do this directly in `/etc/ssl/certs` if you want to, but remember, that it is lost after a reboot.
-
-#### How to test whether a python script fails due to missing ca certificates
-
-```
-from urllib.request import urlopen # Python 3
-urlopen("https://google.com")
-```
-
-If you get this:
-```
-urllib2.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:581)>
-```
-
-there is something wrong.
-
-Remember to run `export SSL_CERT_FILE=cacert.pem` though, as it is done in `renew_certificates.sh`
 #### How can I contribute anything to this project?
 Please open a pull request!
 
